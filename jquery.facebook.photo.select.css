@@ -1,0 +1,220 @@
+/*
+Copyright 2010 Mike Brevoort http://mike.brevoort.com @mbrevoort
+
+v1.0 jquery-facebook-multi-photo-selector
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+#jfmps-photo-selector input {
+    background-color: #fcfcfc;
+    border: 1px solid #ccc;
+    font: 11px verdana, arial, helvetica, sans-serif;
+    margin: 2px 0;
+    padding: 2px 4px;
+}
+.jfmps-albums {                
+    cursor:pointer;
+    display:block;
+    float:left;
+    margin:3px;
+    padding:4px;
+    width: 185px;
+    height: 185px;
+    border: 1px solid #B8B8B8;
+    -moz-border-radius: 5px; 
+    -webkit-border-radius: 5px;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	overflow:hidden;
+    text-align: center;
+}
+
+.jfmps-albums img {
+    border: 1px solid #CCC;
+    float:left;
+    margin:0;
+    height: 130px;
+    width: 100%;
+}
+
+.jfmps-photo-single.selected img {
+}
+
+.jfmps-albums div {
+    color:#111111;
+    font-size: 20px;
+    overflow:hidden;
+    padding:2px 0 0 6px;
+    clear: both;
+}
+
+#jfmps-photo-container {
+    overflow:scroll;
+    overflow-x: hidden;
+    -ms-overflow-x: hidden;
+    width:100%;
+    height:400px;  
+    color: #333;
+    font-size: 12px;
+}
+
+#jfmps-photo-selector {
+    width: 629px;   
+    height: 521px;
+    overflow-y:hidden;                            
+}
+
+#jfmps-inner-header {
+    background: none repeat scroll 0 0 #303030;
+    border-bottom: 1px solid #505050;
+    font-weight:bold;
+    height: 32px;
+    padding:2px;
+    color: #fff;
+    font-size: 16px;
+}
+#jfmps-second-inner-header {
+    background: none repeat scroll 0 0 #303030;
+    border-bottom:1px solid #CCCCCC;
+    font-weight:bold;
+    height: 32px;
+    padding:2px;
+    color: #fff;
+    font-size: 16px;
+}
+
+.jfmps-photo-single.selected {
+    background-color: #928E8E;
+    border: 2px solid #4D4D4D;
+    
+    background: #928E8E; /* for non-css3 browsers */
+
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#928E8E', endColorstr='#5C5C5C'); /* for IE */
+    background: -webkit-gradient(linear, left top, left bottom, from(#928E8E), to(#5C5C5C)); /* for webkit browsers */
+    background: -moz-linear-gradient(top,  #928E8E,  #5C5C5C); /* for firefox 3.6+ */    
+}
+
+.jfmps-photo-single.selected div {
+    color: #FFFFFF;
+}
+
+.hover {
+    background-color: #DFDFDF;
+}
+
+.hide-non-selected, .hide-filtered {
+    display: none;
+}
+
+div.jfmps-button {
+    background:none repeat scroll 0 0 #6D84B4;
+    border:1px solid #3B5998;
+    color:white;
+    cursor:pointer;
+    margin:4px 5px 0 4px;
+    padding:2px 5px;
+    text-decoration:none;
+}
+
+#jfmps-photo-selector a.filter-link:link, a.filter-link:visited {
+    font-weight: bold;
+    text-decoration: none;
+}
+
+#jfmps-photo-selector a.filter-link:hover, #jfmps-photo-selector a.selected {
+    background-color: #FA6800;
+    -moz-border-radius: 5px; 
+    -webkit-border-radius: 5px;
+    color: #FFFFFF;
+}
+
+#jfmps-photo-selector .filter-link {
+    margin:4px 5px 4px 5px;
+    padding:3px 5px 3px 5px;
+}
+
+#jfmps-inner-header .filter-link {
+    float:right;
+}
+
+#jfmps-second-inner-header .filter-link {
+    float:right;
+}
+
+#jfmps-inner-header div.jfmps-button-hover {
+    text-decoration: underline;
+}
+
+
+#jfmps-photo-filter-text {
+    height: 23px;
+}
+
+
+#jfmps-inner-header span.jfmps-title {
+    color: #FFFFFF;
+    font-weight: bold;
+    margin: 3px 0 2px;
+}
+
+#jfmps-max-selected-wrapper {
+    float: right;
+    margin:4px 5px 4px 5px;
+    padding:3px 5px 3px 5px;  
+}
+
+
+#jfmps-photo-selector input#sendbtn {
+background: #FA6800;
+padding: 8px 15px;
+float: right;
+margin: 5px 25px 0px 0px;
+color: #fff;
+font-weight: bold;
+cursor:pointer;
+}
+
+#jfmps-photo-selector input#cancelbtn {
+background: #CACACA;
+padding: 8px 15px;
+float: right;
+margin: 5px;
+font-weight: bold;
+cursor:pointer;
+}
+
+#basetool{
+height: 40px;
+background: #F1F1F1;
+width: 615px;
+border-top: 2px solid #ddd;
+display: block;
+
+}
+.jfmps-photo-single{
+	float:left;
+	margin: 11px;
+	width: 125px;
+	height: 100px;
+	border: 2px solid #CACACA;
+	cursor:pointer;
+}
+.jfmps-photo-single img{
+		width:115px;
+		height: 90px;
+		margin:5px;
+}
+a.disabled{
+	color:#ccc !important;
+}
