@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>Jquery Multi Photo Selector Plugin</title>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="jquery.facebook.photo.select.js"></script> 
+<link rel="stylesheet" href="jquery.facebook.photo.select.css" /> 
+<style type="text/css">
+a:link, a:visited, a:hover {
+	color: inherit;
+	font-weight: bold;
+	text-decoration: none;
+}
+#jfmps-container{
+display:none;
+font-family: Calibri,Helvetica, Arial;
+background-color: rgb(255, 255, 255); 
+position: absolute; top: 55px; left: 125px; 
+border: 10px solid rgb(95, 96, 97);
+}
+</style>
+</head>
+<body>
+<div id="fb-root"></div>
+<script type="text/javascript" src="fbjs.js"> </script>
+<a href="javascript:FBLogin();">
+	<p>Click here to invite</p>
+</a>	
+
+	<div id="jfmps-container" style="">
+	</div> 	
+</body>
+</html>
