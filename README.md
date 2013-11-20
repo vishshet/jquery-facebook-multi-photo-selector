@@ -20,7 +20,7 @@ The plugin depends on the Facebook Javascript API, fbjs.js file has code require
 
 		<script src="fbjs.js"></script>
 
-Function FBLogin() inside fbjs.js takes care of Facebook authentication from user.
+Function FBLogin() inside fbjs.js takes care of Facebook authentication from user, you just have to replace appid - 532750203418042 with your Facebook Application Id.
 
 For Facebook API, you also need to include a div#fb-root in your html.
 
