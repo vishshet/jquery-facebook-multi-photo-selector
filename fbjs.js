@@ -67,12 +67,7 @@
 	function trace(msg){
 		console.log(msg);
 	}
-	
-	function cancelMessage(){
-		$('#jfmps-container').fadeOut();
-	}
-	
-	
+
 	function getAlbums() {
 	  FB.api('/me', function(response) {
 		 $("#jfmps-container").jfmps({ 
@@ -94,3 +89,17 @@
 		  $('#jfmps-container').fadeIn();
 	  });
 	}
+	
+	function getSelectedPhotos(){
+		  var photoSelector  = $("#jfmps-container").data('jfmps');
+		  var selectedPhotosArray = photoSelector.getSelectedPhotos();
+		  var selectedPhotos = "";
+		  for(var i =0; i < selectedPhotosArray.length ; i++){
+			selectedPhotos = selectedPhotos + selectedPhotosArray[i] + "  ,  ";
+		  }
+		  $("#selectedPhotos").html(selectedPhotos);
+		  console.log(selectedPhotos);
+	}
+
+	
+		

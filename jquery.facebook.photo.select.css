@@ -175,7 +175,7 @@ div.jfmps-button {
 }
 
 
-#jfmps-photo-selector input#sendbtn {
+#jfmps-photo-selector input#jfmps-done {
 background: #FA6800;
 padding: 8px 15px;
 float: right;
@@ -185,7 +185,7 @@ font-weight: bold;
 cursor:pointer;
 }
 
-#jfmps-photo-selector input#cancelbtn {
+#jfmps-photo-selector input#jfmps-cancelbtn {
 background: #CACACA;
 padding: 8px 15px;
 float: right;
@@ -194,7 +194,7 @@ font-weight: bold;
 cursor:pointer;
 }
 
-#basetool{
+#jfmps-basetool{
 height: 40px;
 background: #F1F1F1;
 width: 615px;

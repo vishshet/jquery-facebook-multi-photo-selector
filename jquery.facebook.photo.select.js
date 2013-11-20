@@ -16,7 +16,6 @@
 
 // This plugin has been developed upon jquery-facebook-multi-friend-selector
 // developed by awesome Mike Brevoort.
-
 // Copyright 2010 Mike Brevoort http://mike.brevoort.com @mbrevoort
 // 
 // v5.0 jquery-facebook-multi-friend-selector
@@ -57,7 +56,7 @@
             },
 			labels: {
 				selected: "Selected",
-				filter_default: "",
+				filter_default: "Album Name",
 				filter_title: "Search By Albums Names:",
 				all: "All",
 				max_selected_message: "{0} of {1} selected"
@@ -78,18 +77,18 @@
             "    </div>" +
 			"        <div id='jfmps-second-inner-header'><a  href='#' class='filter-link disabled' id='jfmps-backtoalbums'> Back to Albums</a></div>" +
             "    <div id='jfmps-photo-container'></div>" +
-            "    <div id='basetool'><input type='button' value='Done' id='sendbtn' onclick='sendMessage()'/><input type='button' value='Cancel' id='cancelbtn' onclick='cancelMessage()'/></div>" +
+            "    <div id='jfmps-basetool'><input type='button' value='Done' id='jfmps-done'/><input type='button' value='Cancel' id='jfmps-cancelbtn' /></div>" +
             "</div>" 
         ); 
         
         var photo_container = $("#jfmps-photo-container"),    // Albums/Photos Containet
             container = $("#jfmps-photo-selector"),				//  Main Container
 			all_albums,
-			all_photos;
+			all_photos,
+			albumid;
            
 		// Fetch and loop through all ablums 
-        FB.api('/me/albums', function(response) {
-		 console.log(response);
+        FB.api('/me/albums?limit=100', function(response) {
            var sortedFriendData = "",
                 preselectedFriends = {},
                 buffer = [],
@@ -119,20 +118,12 @@
         // Public functions
         // ----------+----------+----------+----------+----------+----------+----------+
         
-        this.getSelectedIds = function() {
-            var ids = [];
-            $.each(elem.find(".jfmps-albums.selected"), function(i, photo) {
-                ids.push($(photo).attr("id"));
+        this.getSelectedPhotos = function() {
+            var photos = [];
+            $.each(elem.find(".jfmps-photo-single.selected"), function(i, photo) {
+                photos.push($(photo).find('img').attr("src"));
             });
-            return ids;
-        };
-        
-        this.getSelectedIdsAndNames = function() {
-            var selected = [];
-            $.each(elem.find(".jfmps-albums.selected"), function(i, photo) {
-                selected.push( {id: $(photo).attr("id"), name: $(photo).find(".photo-name").text()});
-            });
-            return selected;
+            return photos;
         };
         
         this.clearSelected = function () {
@@ -145,6 +136,15 @@
         
         var init = function() {
             all_albums = $(".jfmps-albums", elem);
+			
+			//add hover effect on albums
+			$(".jfmps-albums").hover(
+			  function() {
+				$( this ).addClass("hover");
+			  }, function() {
+				$( this ).removeClass( "hover" );
+			  }
+			);
             
             // calculate albums per row
             albums_first_element_offset_px = all_albums.first().offset().top;
@@ -162,11 +162,9 @@
                 // if the element is being selected, test if the max number of items have
                 albumid = $(this).attr('id');
 				$('.jfmps-albums').fadeOut();			
-				console.log($("#jfmps-backtoalbums").removeClass("disabled"));
 				// Check if photos already fetched for a given album
 				if($('#jfmps-album'+albumid).html().trim() == ""){
-					FB.api("/"+albumid+"/photos?access_token="+accessToken,function(response){
-						console.log(response);
+					FB.api("/"+albumid+"/photos?limit=100&access_token="+accessToken,function(response){						
 						var photos = response["data"];
 						for(var v=0;v<photos.length;v++) {
 						
@@ -174,19 +172,18 @@
 							var imagediv = '<div class="jfmps-photo-single"><img alt="'+photos[v]["source"]+'" class="jfmps-photo-img"/></div>';
 							$('#jfmps-album'+albumid).append(imagediv);
 							if(v+1 == photos.length){
-								//Check if photos per row is already calculated
-								if(photos_per_row == 0){
-									all_photos = $(".jfmps-photo-single", elem);
-									
-									// calculate photos per row within an album
-									photos_first_element_offset_px = all_photos.first().offset().top;
-									for(var i=0, l=all_photos.length; i < l; i++ ) {
-										if($(all_photos[i]).offset().top === photos_first_element_offset_px) {
-											photos_per_row++;
-										} else {
-											photos_height_px = $(all_photos[i]).offset().top - photos_first_element_offset_px;
-											break;
-										}
+								
+								
+								all_photos = $(".jfmps-photo-single", elem);
+								
+								// calculate photos per row within an album
+								photos_first_element_offset_px = all_photos.first().offset().top;
+								for(var i=0, l=all_photos.length; i < l; i++ ) {
+									if($(all_photos[i]).offset().top === photos_first_element_offset_px) {
+										photos_per_row++;
+									} else {
+										photos_height_px = $(all_photos[i]).offset().top - photos_first_element_offset_px;
+										break;
 									}
 								}
 								
@@ -253,7 +250,7 @@
 									if( maxSelectedEnabled() ) {
 										updateMaxSelectedMessage();
 									}
-									elem.trigger("jfmps.selection.changed", [obj.getSelectedIdsAndNames()]);
+									elem.trigger("jfmps.selection.changed", [obj.getSelectedPhotos()]);
 								});
 							}
 						}
@@ -298,12 +295,19 @@
 					$(".jfmps-albums").fadeIn();
 				}
             })
+			
+			//close container
+			$("#jfmps-cancelbtn").click(function(){
+				$('#jfmps-container').fadeOut();
+			});
+            $("#jfmps-done").click(function(){
+				$('#jfmps-container').fadeOut();
+			});
             
   
             // filter as you type 
             $("#jfmps-photo-filter-text").keyup( function() {
-                    var filter = $(this).val();
-					console.log(filter);
+                    var filter = $(this).val();					
                     clearTimeout(keyUpTimer);
                     keyUpTimer = setTimeout( function() {
                         if(filter == '') {
@@ -317,13 +321,13 @@
                     }, 400);
                 })
                 .focus( function() {
-                    if($.trim($(this).val()) == 'Start typing a name') {
+                    if($.trim($(this).val()) == settings.labels.filter_default) {
                         $(this).val('');
                     }
                     })
                 .blur(function() {
                     if($.trim($(this).val()) == '') {
-                        $(this).val('Start typing a name');
+                        $(this).val(settings.labels.filter_default);
                     }                        
                     });
 
@@ -383,23 +387,19 @@
                     $el, top_px,
                     elementVisitedCount1 = 0,
                     foundVisible = false,
-                    allVisiblePhotos = $(".jfmps-photo-single:not(.hide-filtered )");
+                    allVisiblePhotos = $('#jfmps-album'+albumid).find(".jfmps-photo-single:not(.hide-filtered )");
 
                 $.each(allVisiblePhotos, function(i, $el){
                     elementVisitedCount1++;
-					console.log(elementVisitedCount1);
                     if($el !== null) {
                         $el = $(allVisiblePhotos[i]);
-						console.log($el);
                         top_px = (photos_first_element_offset_px + (photos_height_px * Math.ceil(elementVisitedCount1/photos_per_row))) - scroll_top_px - container_offset_px; 
 						if (top_px + photos_height_px >= -10 && 
                             top_px - photos_height_px < container_height_px) {  // give some extra padding for broser differences   
-								console.log($el.find('img').attr('alt'));
 								if($el.find('img').attr('src') === undefined) {
 									$el.find('img').attr("src", $el.find('img').attr('alt'));
 								}
-                                foundVisible = true;
-								console.log($el);
+                                foundVisible = true; 
                         } 
                         else {                  
                             if(foundVisible) {
