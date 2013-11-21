@@ -161,7 +161,7 @@
 			elem.delegate(".jfmps-albums", 'click', function(event) {
                 // if the element is being selected, test if the max number of items have
                 albumid = $(this).attr('id');
-				$('.jfmps-albums').fadeOut();			
+				$('.jfmps-albums').addClass("jfmps-hide-albums");			
 				// Check if photos already fetched for a given album
 				if($('#jfmps-album'+albumid).html().trim() == ""){
 					FB.api("/"+albumid+"/photos?limit=100&access_token="+accessToken,function(response){						
@@ -292,7 +292,7 @@
 					event.preventDefault();				
 					$("#jfmps-backtoalbums").addClass("disabled");
 					$(".jfmps-single-photo-container").fadeOut();
-					$(".jfmps-albums").fadeIn();
+					$(".jfmps-albums").removeClass("jfmps-hide-albums");			
 				}
             })
 			
@@ -307,15 +307,15 @@
   
             // filter as you type 
             $("#jfmps-photo-filter-text").keyup( function() {
-                    var filter = $(this).val();					
+                    var filter = $(this).val();			
                     clearTimeout(keyUpTimer);
                     keyUpTimer = setTimeout( function() {
                         if(filter == '') {
                             all_albums.removeClass("hide-filtered");
                         }
                         else {
-                            container.find(".photo-name:not(:Contains(" + filter +"))").parent().addClass("hide-filtered");
-                            container.find(".photo-name:Contains(" + filter +")").parent().removeClass("hide-filtered");                         
+                            container.find(".photo-name:not(:Contains(" + filter +"))").parent().not(".jfmps-hide-albums").addClass("hide-filtered");
+                            container.find(".photo-name:Contains(" + filter +")").parent().not(".jfmps-hide-albums").removeClass("hide-filtered");                         
                         }    
                         showAlbumsInViewPort();                        
                     }, 400);

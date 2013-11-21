@@ -218,3 +218,6 @@ display: block;
 a.disabled{
 	color:#ccc !important;
 }
+.jfmps-hide-albums{
+	display:none;
+}
